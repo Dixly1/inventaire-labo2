@@ -15,8 +15,8 @@ docker compose up --build -d
 ```
 
 ## Images Docker Hub
-- postgres : `ETUDIANT1/inventaire-postgres:1.0`
-- api      : `ETUDIANT2/inventaire-api:1.0`
+- postgres : `dixlyma/inventaire-postgres:1.0`
+- api      : `dixlyma/inventaire-api:1.0`
 
 ## Déploiement depuis Docker Hub (sans code source)
 Voir la Partie C du laboratoire. Créer un dossier vide, y placer un `.env`
