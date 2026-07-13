@@ -8,7 +8,7 @@ API Flask + PostgreSQL, conteneurisée et publiée sur Docker Hub.
 
 ## Déploiement depuis le code source
 ```bash
-git clone https://github.com/VOTRE_USER/inventaire-labo2.git
+git clone https://github.com/Dixly1/inventaire-labo2.git
 cd inventaire-labo2
 cp .env.example .env   # remplir POSTGRES_PASSWORD
 docker compose up --build -d
