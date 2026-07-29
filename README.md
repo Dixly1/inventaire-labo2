@@ -41,4 +41,43 @@ curl http://localhost:5000/stats
 | POST    | `/articles`       | Créer un article                  |
 | PATCH   | `/articles/<id>`  | Modifier un article               |
 | DELETE  | `/articles/<id>`  | Suppression logique (actif=FALSE) |
+| GET     | `/version`        | Version de l'API et auteurs       |
 | GET     | `/stats`          | Statistiques de l'inventaire      |
+
+---
+
+# Déploiement distant
+
+## URLs publiques
+- API (Render)  : `https://inventaire-api-XXXX.onrender.com`
+- Health        : `https://inventaire-api-XXXX.onrender.com/health`
+- Articles      : `https://inventaire-api-XXXX.onrender.com/articles`
+- URL Codespace : `https://XXXX-5000.app.github.dev` (temporaire, change à chaque session)
+
+## Images Docker Hub
+- postgres  : `dixlyma/inventaire-postgres:1.0`
+- api v1.0  : `dixlyma/inventaire-api:1.0`
+- api v1.1  : `dixlyma/inventaire-api:1.1`
+
+## Partie A — Reproduire le déploiement Codespace
+1. Ouvrir un Codespace sur ce dépôt (bouton **Code → Codespaces → Create codespace on main**).
+2. `cp .env.example .env` puis remplir `POSTGRES_PASSWORD`.
+3. `docker compose -f compose-hub.yml up -d`
+4. Onglet **PORTS** → publier le port **5000** en **Public**.
+5. Tester : `https://XXXX-5000.app.github.dev/health`
+
+## Partie B — Reproduire le déploiement Render
+1. Créer une base **PostgreSQL** sur render.com (plan Free).
+2. Exécuter `services/postgres/init/01_schema.sql` dans le shell psql Render.
+3. Créer un **Web Service** avec l'image `dixlyma/inventaire-api:1.1`
+   (Deploy an existing image from a registry).
+4. Configurer les variables d'environnement (voir `.env.example` + `POSTGRES_HOST`
+   = External Host de la base Render).
+5. Tester : `https://inventaire-api-XXXX.onrender.com/health`
+
+## Mettre à jour l'API (nouvelle version)
+```bash
+docker build -t dixlyma/inventaire-api:1.2 ./services/api
+docker push dixlyma/inventaire-api:1.2
+# Puis changer l'Image URL dans les Settings du Web Service Render
+```

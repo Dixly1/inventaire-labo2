@@ -101,6 +101,12 @@ def supprimer(aid):
     return jsonify({'message': 'supprime', 'id': aid})
 
 
+# GET /version — version de l'API et auteurs
+@app.route('/version')
+def version():
+    return jsonify({'version': '1.1', 'auteurs': 'Adam Aougar'})
+
+
 # GET /stats — statistiques de l'inventaire
 @app.route('/stats')
 def stats():
