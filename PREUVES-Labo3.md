@@ -58,8 +58,42 @@ URL publique ouverte hors Codespace → réponse JSON identique, prouvant l'acc�
 
 ---
 
-## PARTIE B — Render.com
-(À compléter après création du compte Render : Preuves #7 à #13.)
+## PARTIE B — Render.com (déployée via Blueprint render.yaml)
+
+URL publique : `https://inventaire-api-n4x1.onrender.com`
+Base : `inventaire-db` (PostgreSQL 18, Oregon, plan Free) — base `inventaire_b19t`, user `admin`.
+
+### Preuve #7 — Base PostgreSQL Render (infos de connexion) ✅
+Base créée par le Blueprint, statut **Available**. Hostname `dpg-...oregon-postgres.render.com`, port 5432.
+
+### Preuve #8 — Schéma initialisé ✅
+```
+TABLES: ['articles', 'categories']
+ARTICLES: 5
+CATEGORIES: 4
+```
+
+### Preuve #9 — Web Service Live ✅
+`inventaire-api` (image `dixlyma/inventaire-api:1.1`, plan Free) — statut **Live**,
+URL `https://inventaire-api-n4x1.onrender.com`.
+
+### Preuve #10 — Tests CRUD via l'URL Render ✅
+```
+GET  /health   → {"db":"connectee","statut":"ok"}
+GET  /articles → 5 articles initiaux
+POST /articles {"reference":"RENDER-001",...} → {"id":6,"message":"cree"}  HTTP 201
+GET  /articles → ['RENDER-001','RAM-001','KBD-001','CPU-001','SSD-001','NET-001']
+GET  /stats    → {"nb":6,"stock":115,"valeur":"15848.85"}
+```
+
+### Preuve #13 — Mise à jour v1.1 sur Render ✅
+```
+GET /version → {"version":"1.1","auteurs":"Adam Aougar"}
+```
+
+### Preuve #12 — Persistance
+Marqueur `PERSIST-001` créé (id 7). Redémarrage du service à effectuer pour la capture
+(données persistées dans la base PostgreSQL Render, indépendante du service Flask).
 
 ## Preuve #14 — Commits Labo 3 sur GitHub
 ```
