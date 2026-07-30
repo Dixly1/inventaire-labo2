@@ -1,0 +1,47 @@
+# Render Blueprint — deploiement Partie B (Labo 2)
+# Dashboard Render : New + -> Blueprint -> connecter Dixly1/inventaire-labo2 -> Apply
+# Cree automatiquement : la base PostgreSQL + le Web Service (image Docker Hub v1.1)
+# avec toutes les variables d'environnement cablees.
+# NB : la base est vide au depart -> charger services/postgres/init/01_schema.sql
+#      dans le Shell psql Render (Preuve #8).
+
+databases:
+  - name: inventaire-db
+    databaseName: inventaire
+    user: admin
+    plan: free
+    region: oregon
+
+services:
+  - type: web
+    name: inventaire-api
+    runtime: image
+    image:
+      url: docker.io/dixlyma/inventaire-api:1.1
+    plan: free
+    region: oregon
+    envVars:
+      - key: POSTGRES_HOST
+        fromDatabase:
+            name: inventaire-db
+            property: host
+      - key: POSTGRES_PORT
+        fromDatabase:
+            name: inventaire-db
+            property: port
+      - key: POSTGRES_DB
+        fromDatabase:
+            name: inventaire-db
+            property: database
+      - key: POSTGRES_USER
+        fromDatabase:
+            name: inventaire-db
+            property: user
+      - key: POSTGRES_PASSWORD
+        fromDatabase:
+            name: inventaire-db
+            property: password
+      - key: API_PORT
+        value: "5000"
+      - key: FLASK_ENV
+        value: production

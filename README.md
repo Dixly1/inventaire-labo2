@@ -67,6 +67,16 @@ curl http://localhost:5000/stats
 5. Tester : `https://XXXX-5000.app.github.dev/health`
 
 ## Partie B — Reproduire le déploiement Render
+
+### Option rapide — Blueprint (`render.yaml`, recommandé)
+1. Dashboard Render → **New + → Blueprint**.
+2. Connecter le dépôt `Dixly1/inventaire-labo2` → **Apply**.
+   Render crée la base PostgreSQL + le Web Service (image `dixlyma/inventaire-api:1.1`)
+   avec toutes les variables d'environnement câblées automatiquement.
+3. Charger le schéma : coller `services/postgres/init/01_schema.sql` dans le **Shell psql** Render.
+4. Tester : `https://inventaire-api-XXXX.onrender.com/health`
+
+### Option manuelle
 1. Créer une base **PostgreSQL** sur render.com (plan Free).
 2. Exécuter `services/postgres/init/01_schema.sql` dans le shell psql Render.
 3. Créer un **Web Service** avec l'image `dixlyma/inventaire-api:1.1`
